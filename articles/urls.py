@@ -4,4 +4,5 @@ from . import views
 app_name = 'articles'
 urlpatterns = [
     # 그냥 만들어 놓았으니 수정하세요~
+    path('', views.index, name='index'),
 ]
