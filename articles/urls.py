@@ -6,4 +6,5 @@ urlpatterns = [
     # 그냥 만들어 놓았으니 수정하세요~
     path('', views.index, name='index'),
     path('<int:article_pk>/detail/comments', views.comments_create, name='comment_create'),
+    path('<int:article_pk>/detail/', views.detail, name='detail'),
 ]
