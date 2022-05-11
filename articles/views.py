@@ -9,3 +9,6 @@ def index(request):
         'articles': articles,
     }
     return render(request, 'articles/index.html', context)
+    
+def detail(request,article_pk):
+    pass
