@@ -1,6 +1,7 @@
-from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from .models import Article
+from .forms import ArticleForm
 
 # Create your views here.
 
@@ -9,10 +10,8 @@ def create(request):
     if request.method == 'POST':
         form = ArticleForm(request.POST)
         if form.is_valid():
-            article = form.save(commit=False)
-            article.user = request.user
-            article.save()
-            return redirect('articles:detail', article.pk)
+            article = form.save()
+            return redirect('articles:index')
     else:
         form = ArticleForm()
     context = {
@@ -27,8 +26,6 @@ def index(request):
     }
     return render(request, 'articles/index.html', context)
     
-def detail(request,article_pk):
-    pass
 
 
 def likes(request, article_pk):
@@ -38,4 +35,34 @@ def likes(request, article_pk):
         'liked' : article.like,
     }
     return JsonResponse(context)
+    
+def detail(request, pk):
+    article = get_object_or_404(Article, pk=pk)
+    context = {
+        'article': article,
+    }
+    return render(request, 'articles/detail.html', context)
+
+def delete(request, pk):
+    article = get_object_or_404(Article, pk=pk)
+    # 비밀번호가 같다면! 추가해야 함
+    article.delete()
+    return redirect('articles.index')
+
+def update(request, pk):
+    article = get_object_or_404(Article, pk=pk)
+    # 비밀번호가 같다면! 추가해야 함
+    if request.method == 'POST':
+        form = ArticleForm(request.POST, instance=article)
+        if form.is_valid():
+            article = form.save()
+            return redirect('articles:detail', article.pk)
+    else:
+        form = ArticleForm(instance=article)
+
+    context = {
+        'article': article,
+        'form' : form,
+    }
+    return render(request,'article/update.html', context)
 
