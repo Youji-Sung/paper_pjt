@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>여기는 인덱스</h1>
+  {% for article in articles %}
+    <p>
+      {{article.nickname}}
+    </p>
+    <P>
+      {{article.content}}
+    </P>
+    <P>
+      like: {{article.like}}
+    </P>
+
+    <hr>
+  {% endfor %}
+
+{% endblock content %}
