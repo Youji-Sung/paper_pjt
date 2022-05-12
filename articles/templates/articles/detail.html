@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <img src="{{ article.article_img.url }}" alt="image">
+  <p>{{ article.content }}</p>
+  <p>{{ article.nickname }}</p>
+
+  <a href="{% url 'articles:update' article.pk %}">수정</a>
+  <form action="{% url 'articles:delete' article.pk %}" method="POST">
+    {% csrf_token %}
+    <input type="submit" value="삭제">
+  </form>
+
+  {% comment %} <a href="{% url 'articles:index' %}">back</a> {% endcomment %}
+
+
+
+{% endblock content %}

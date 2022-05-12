@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 from .models import Article
 
 # Create your views here.
@@ -26,5 +26,33 @@ def index(request):
     }
     return render(request, 'articles/index.html', context)
     
-def detail(request,article_pk):
-    pass
+def detail(request, pk):
+    article = get_object_or_404(Article, pk=pk)
+    context = {
+        'article': article,
+    }
+    return render(request, 'articles/detail.html', context)
+
+def delete(request, pk):
+    article = get_object_or_404(Article, pk=pk)
+    # 비밀번호가 같다면! 추가해야 함
+    article.delete()
+    return redirect('articles.index')
+
+def update(request, pk):
+    article = get_object_or_404(Article, pk=pk)
+    # 비밀번호가 같다면! 추가해야 함
+    if request.method == 'POST':
+        form = ArticleForm(request.POST, instance=article)
+        if form.is_valid():
+            article = form.save()
+            return redirect('articles:detail', article.pk)
+    else:
+        form = ArticleForm(instance=article)
+
+    context = {
+        'article': article,
+        'form' : form,
+    }
+    return render(request,'article/update.html', context)
+
