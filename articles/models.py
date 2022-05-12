@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.forms import CharField
 
+
 # Create your models here.
 class Article(models.Model):
     nickname = models.CharField(max_length=20)
@@ -10,7 +11,9 @@ class Article(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     like = models.IntegerField()
     password = models.CharField(max_length=100)
-    article_img = models.ImageField()
+    # article_img = models.ImageField()
+    article_image = models.ImageField(upload_to='images/', blank=True)
+
 
     def __str__(self):
             return self.nickname
