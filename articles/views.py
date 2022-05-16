@@ -79,18 +79,27 @@ def detail(request, pk):
 
 def delete(request, pk):
     article = get_object_or_404(Article, pk=pk)
-    # 비밀번호가 같다면! 추가해야 함
-    article.delete()
-    return redirect('articles:index')
+    if request.method == 'POST':
+        if request.POST.get('password') == article.password:    
+            article.delete()
+            return redirect('articles:index')
+    context = {
+        'article' : article
+    }
+
+    return render(request, 'articles/delete.html', context)
 
 def update(request, pk):
     article = get_object_or_404(Article, pk=pk)
-    # 비밀번호가 같다면! 추가해야 함
     if request.method == 'POST':
-        form = ArticleForm(request.POST, instance=article)
-        if form.is_valid():
-            article = form.save()
-            return redirect('articles:detail', article.pk)
+        if request.POST.get('password') == article.password:   
+            form = ArticleForm(request.POST, instance=article)
+            if form.is_valid():
+                article = form.save()
+                return redirect('articles:detail', article.pk)
+        else:
+            form = ArticleForm(instance=article)
+        
     else:
         form = ArticleForm(instance=article)
 
