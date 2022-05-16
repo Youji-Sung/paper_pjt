@@ -14,7 +14,6 @@ class Article(models.Model):
     # article_img = models.ImageField()
     article_image = models.ImageField(upload_to='images/', blank=True)
 
-
     def __str__(self):
             return self.nickname
 

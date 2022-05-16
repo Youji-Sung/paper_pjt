@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>comment test</h1>
+<form action="#" method='POST'>
+  {% csrf_token %}
+  {{ comment.as_p }}
+  <input type="submit" value='작성'>
+
+</form>
+
+{% endblock content %}
+
