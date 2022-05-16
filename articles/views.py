@@ -36,7 +36,7 @@ def delete(request, pk):
     article = get_object_or_404(Article, pk=pk)
     # 비밀번호가 같다면! 추가해야 함
     article.delete()
-    return redirect('articles.index')
+    return redirect('articles:index')
 
 def update(request, pk):
     article = get_object_or_404(Article, pk=pk)
@@ -53,5 +53,5 @@ def update(request, pk):
         'article': article,
         'form' : form,
     }
-    return render(request,'article/update.html', context)
+    return render(request,'articles/update.html', context)
 

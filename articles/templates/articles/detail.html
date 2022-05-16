@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <img src="{{ article.article_img.url }}" alt="image">
+  <img src="{{ article.article_image.url }}" alt="image">
   <p>{{ article.content }}</p>
   <p>{{ article.nickname }}</p>
 
@@ -11,7 +11,7 @@
     <input type="submit" value="삭제">
   </form>
 
-  {% comment %} <a href="{% url 'articles:index' %}">back</a> {% endcomment %}
+  <a href="{% url 'articles:index' %}">back</a>
 
 
 
