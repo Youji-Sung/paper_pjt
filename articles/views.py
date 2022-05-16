@@ -7,9 +7,11 @@ from .forms import ArticleForm
 
 def create(request):
     if request.method == 'POST':
-        form = ArticleForm(request.POST)
+        form = ArticleForm(request.POST, request.FILES)
         if form.is_valid():
-            article = form.save()
+            article = form.save(commit=False)
+            article.like = 0
+            article.save()
             return redirect('articles:index')
     else:
         form = ArticleForm()
