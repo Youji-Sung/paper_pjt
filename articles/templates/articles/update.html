@@ -6,6 +6,8 @@
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit">
+    <input type="password" name="password">
+    <button>수정</button>
   </form>
   <a href="{% url 'articles:detail' article.pk %}">back</a>
 
