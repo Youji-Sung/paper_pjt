@@ -5,12 +5,33 @@
   <p>{{ article.content }}</p>
   <p>{{ article.nickname }}</p>
 
-  <a href="{% url 'articles:update' article.pk %}">수정</a>
+  {% comment %} <a href="{% url 'articles:update' article.pk %}">수정</a>
   <form action="{% url 'articles:delete' article.pk %}" method="POST">
     {% csrf_token %}
     <input type="submit" value="삭제">
-  </form>
+  </form> {% endcomment %}
 
+  <h2>댓글 목록</h2>
+  <ul>
+    {% for comment in comments %}
+      <li>
+        <p>{{ comment.nickname }} 님의 댓글</p>
+        {{ comment.content }}
+      </li>
+      <form action="{% url 'articles:comment_delete' article.pk comment.pk %}" method="POST">
+        {% csrf_token %}
+        {% comment %} 수정 필요 {% endcomment %}
+        <input type="password" name="password" id="password">
+        <button type="submit">삭제</button>
+      </form>
+    {% endfor %}
+  </ul>
+  <h2>댓글 작성</h2>
+  <form action="{% url 'articles:comment_create' article.pk %}" method='POST'>
+    {% csrf_token %}
+    {{ comment_form.as_p }}
+    <input type="submit">
+  </form>
   {% comment %} <a href="{% url 'articles:index' %}">back</a> {% endcomment %}
 
 

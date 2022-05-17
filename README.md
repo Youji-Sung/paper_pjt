@@ -18,5 +18,5 @@
 
 #### 5.12
 
-- detail _ comment 생성
+- detail _ comment  view 작성
 - 

@@ -6,36 +6,40 @@ from .forms import ArticleForm
 
 # Create your views here.
 
-
-# [김동신] 댓글 Read (나중에 index 작성되면 따로 합쳐야될 듯)
-def comment(request, article_pk):
+# [김동신] 댓글 Create / template에 적용 완료
+def comment_create(request,article_pk):
     article = get_object_or_404(Article,pk=article_pk)
-    comments = article.comment_set.all()
-    context = {
-        "comments" : comments,
-    }
-    return render(request, 'articles/index.html', context)
+    comment_form = CommentForm(request.POST)
 
+    if comment_form.is_valid() :
+        comment = comment_form.save(commit=False)
+        comment.article = article
+        comment.save()
+    return redirect('articles:detail', article.pk)
 
-# [김동신] 댓글 Create(나중에 detail page랑 합쳐야됨)
-def comment_create(request):
-    comment = CommentForm()
-    context = {
-        'comment' : comment
-    }
-    return render(request, 'articles/comment.html', context)
 
 # [김동신] 댓글 Delete
-def comment_delete(request, comment_pk):
+def comment_delete(request, comment_pk, article_pk):
     comment = get_object_or_404(Comment,pk=comment_pk)
-    comment.delete()
-    return redirect('comment:create')
+    if comment.password == request.POST.get("password") :
+        comment.delete()
+    return redirect('articles:detail', pk=article_pk)
 
 # [김동신] 댓글 Update
-def comment_update(request, comment_pk):
-    comment_form = CommentForm(request.POST)
+def comment_update(request, article_pk, comment_pk):
+    comment = get_object_or_404(Comment,pk=comment_pk)
+    # template에서 form 활용해서 비번 받아올 것
+    if request.POST.password == comment.password :
+        comment_form = CommentForm(request.POST, instance=comment)
+        if comment_form.is_valid():
+            comment = comment_form.save()
+            return redirect('articles:detail', article_pk)
+    
+    else :
+        comment_form = CommentForm(instance=comment)
     context = {
-        'form':comment_form,
+        'comment' : comment,
+        'comment_form' : comment_form,
     }
     return render(request, 'articles/comment_update.html', context)
 
@@ -69,11 +73,17 @@ def likes(request, article_pk):
         'liked' : article.like,
     }
     return JsonResponse(context)
-    
+
+# 댓글 목록 및 댓글 작성 추가
 def detail(request, pk):
     article = get_object_or_404(Article, pk=pk)
+    comment_form = CommentForm()
+    comments = article.comment_set.all()
+
     context = {
         'article': article,
+        "comments" : comments,
+        "comment_form" : comment_form,
     }
     return render(request, 'articles/detail.html', context)
 
