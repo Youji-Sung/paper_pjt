@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>DELETE</h1>
+  <form action="{% url 'articles:delete' article.pk %}" method="POST">
+    {% csrf_token %}
+    <input type="password" name="password">
+    <button>삭제</button>
+
+  </form>
+  
+{% endblock content %}

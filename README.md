@@ -14,3 +14,9 @@
   - git push 할 때 origin master 가 아닌 본인의 branch에 실행해야함
 - 
 
+
+
+#### 5.12
+
+- detail _ comment  view 작성
+- 
