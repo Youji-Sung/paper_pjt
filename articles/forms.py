@@ -10,7 +10,7 @@ class CommentForm(forms.ModelForm):
 
 
 class ArticleForm(forms.ModelForm):
-
+    
     class Meta:
         model = Article
         exclude = ('like',)

@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <img src="{{ article.article_image.url }}" alt="image">
+  {% if article.article_image %}
+    <img src="{{ article.article_image.url }}" alt="image">
+  {% endif %}
   <p>{{ article.content }}</p>
   <p>{{ article.nickname }}</p>
 
