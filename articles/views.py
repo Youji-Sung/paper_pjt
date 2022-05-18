@@ -27,9 +27,10 @@ def comment_delete(request, comment_pk, article_pk):
 
 # [김동신] 댓글 Update
 def comment_update(request, article_pk, comment_pk):
+    article = get_object_or_404(Article,pk=article_pk)
     comment = get_object_or_404(Comment,pk=comment_pk)
     # template에서 form 활용해서 비번 받아올 것
-    if request.POST.password == comment.password :
+    if request.POST.get('password') == comment.password :
         comment_form = CommentForm(request.POST, instance=comment)
         if comment_form.is_valid():
             comment = comment_form.save()
@@ -38,6 +39,7 @@ def comment_update(request, article_pk, comment_pk):
     else :
         comment_form = CommentForm(instance=comment)
     context = {
+        'article' : article,
         'comment' : comment,
         'comment_form' : comment_form,
     }
@@ -68,13 +70,11 @@ def index(request):
     
 
 
-def likes(request, article_pk):
-    article = get_object_or_404(Article, pk=article_pk)
+def likes(request, pk):
+    article = get_object_or_404(Article, pk=pk)
     article.like += 1
-    context = {
-        'liked' : article.like,
-    }
-    return JsonResponse(context)
+
+    return redirect('articles:detail', pk)
 
 # 댓글 목록 및 댓글 작성 추가
 def detail(request, pk):

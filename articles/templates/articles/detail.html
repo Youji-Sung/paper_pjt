@@ -7,6 +7,12 @@
   <p>{{ article.content }}</p>
   <p>{{ article.nickname }}</p>
 
+  <P> 좋아요: {{ article.like }} </P>
+  <form action="{% url 'articles:like' article.pk %}">
+    <button> 좋아요 </button>
+  </form>
+
+
   <a href="{% url 'articles:update' article.pk %}">수정</a>
   <form action="{% url 'articles:delete' article.pk %}" method="POST">
     {% csrf_token %}
@@ -20,12 +26,20 @@
         <p>{{ comment.nickname }} 님의 댓글</p>
         {{ comment.content }}
       </li>
-      <form action="{% url 'articles:comment_delete' article.pk comment.pk %}" method="POST">
+
+      <a href="{% url 'articles:comment_update' article.pk comment.pk %}">댓글 수정</a>
+
+      <form action="{% url 'articles:comment_delete' article.pk comment.pk %}" 
+      method="POST" id='comment_delete'>
         {% csrf_token %}
-        {% comment %} 수정 필요 {% endcomment %}
         <input type="password" name="password" id="password">
-        <button type="submit">삭제</button>
+        <button id="comment_delete">댓글 삭제</button>
       </form>
+
+
+
+
+        
     {% endfor %}
   </ul>
   <h2>댓글 작성</h2>
@@ -36,7 +50,10 @@
   </form>
   {% comment %} <a href="{% url 'articles:index' %}">back</a> {% endcomment %}
   <a href="{% url 'articles:index' %}">back</a>
-
-
-
 {% endblock content %}
+
+{% block script %}
+<script>
+
+</script>
+{% endblock script %}
